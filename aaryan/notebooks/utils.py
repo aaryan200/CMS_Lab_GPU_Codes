@@ -403,3 +403,43 @@ def plot_graph(times, labels, sizes, title,
     plt.legend()
     plt.grid()
     plt.show()
+
+def main():
+    arr_sizes = [16, 32, 64, 128, 200, 256, 512, 768, 1024]
+    NUM_ITER = 8
+    # Using numpy
+    np_times = []
+    for size in tqdm(arr_sizes, desc="Numpy"):
+        time_taken = np_spinodal(arr_size=size, num_iter = NUM_ITER, 
+                                verbose=False)
+        np_times.append(time_taken)
+
+    # Using scipy
+    sp_times = []
+    for size in tqdm(arr_sizes, desc="Scipy"):
+        time_taken = sp_spinodal(arr_size=size, num_iter = NUM_ITER, 
+                                verbose=False)
+        sp_times.append(time_taken)
+
+    # Using pyfftw
+    pyfftw_times = []
+    for size in tqdm(arr_sizes, desc="PyFFTW"):
+        time_taken = pyfftw_spinodal(arr_size=size, num_iter = NUM_ITER, 
+                                    verbose=False)
+        pyfftw_times.append(time_taken)
+
+
+    # Using cunumeric
+    cun_times = []
+    for size in tqdm(arr_sizes, desc="CuNumeric"):
+        time_taken = cun_spinodal(arr_size=size, num_iter = NUM_ITER, 
+                                verbose=False)
+        cun_times.append(time_taken)
+
+    labels = ["Numpy", "Scipy", "PyFFTW", "CuNumeric"]
+    times = [np_times, sp_times, pyfftw_times, cun_times]
+    title = "Spinodal-2D with different libraries"
+    plot_graph(times, labels, arr_sizes, title)
+
+if __name__ == "__main__":
+    main()
